@@ -61,7 +61,7 @@ class Edge:
     def add_trip(self, trip_id: int,departure: int, arrival: int, valid_from: date, valid_to: date, weekdays: dict[int, bool], added_on: set[date], removed_on: set[date]): 
         self.trips[trip_id] = Trip(departure, arrival, valid_from, valid_to, weekdays, added_on, removed_on) # There should be no instance of two trips with the same id, but a different timedate. If there is, it's a problem with the data
 
-    def cost(self, start_date: date, time_elapsed: int) -> int: # sort and do bisect search for huge opt
+    def cost(self, start_date: date, time_elapsed: int) -> tuple[int, bool]: # sort and do bisect search for huge opt
         '''
         Returns the lowest cost (in seconds) of taking this edge, based on the arrival time to the previous stop and the departure and travel time of a trip along this edge
         Args:
