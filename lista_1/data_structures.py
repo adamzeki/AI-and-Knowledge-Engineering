@@ -40,7 +40,7 @@ class Edge:
     '''
     trips: dict[int, Trip]
 
-    def add_trip(self, trip_id: int,departure: int, arrival: int, valid_from: date, valid_to: date, weekdays: dict[int, bool], added_on: set[date], removed_on: set[date]): 
+    def add_trip(self, trip_id: int, departure: int, arrival: int, valid_from: date, valid_to: date, weekdays: dict[int, bool], added_on: set[date], removed_on: set[date]): 
         self.trips[trip_id] = Trip(departure, arrival, valid_from, valid_to, weekdays, added_on, removed_on) # There should be no instance of two trips with the same id, but a different timedate. If there is, it's a problem with the data
 
     def is_loaded(self) -> bool:
@@ -77,11 +77,17 @@ class Node:
     def add_child(self, child_id: int):
         self.children.add(child_id)
 
-    def add_edge(self, next_id: int):
+    def add_edge(self, next_id: int): # Probably unnecessary
         if next_id not in self.edges:
             self.edges[next_id] = Edge(next_id, [])
+    
+    def add_trip(self, next_id: int, trip_id: int, departure: int, arrival: int, valid_from: date, valid_to: date, weekdays: dict[int, bool], added_on: set[date], removed_on: set[date]):
+        if next_id not in self.edges:
+            self.edges[next_id] = Edge(next_id, [])
+        
+        self.edges[next_id].add_trip(trip_id, departure, arrival, valid_from, valid_to, weekdays, added_on, removed_on)
 
-    def distance(self, other: Node) -> float:
+    def distance(self, other) -> float:
         '''
         Calculates the distance between this stop and another stop using the Haversine formula
         '''
