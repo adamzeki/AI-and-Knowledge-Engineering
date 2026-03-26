@@ -15,7 +15,7 @@ class RailwayTuple(NamedTuple):
 def read_data(dir_path: Path) -> RailwayTuple:
     df_calendar = read_csv(dir_path / 'calendar.txt')
     df_calendar_dates = read_csv(dir_path / 'calendar_dates.txt')
-    df_stops = read_csv(dir_path / 'stops.txt', dtype={'stop_lat': float, 'stop_lon': float})
+    df_stops = read_csv(dir_path / 'stops.txt', dtype={'stop_id': 'Int32', 'parent_station': 'Int32', 'stop_lat': float, 'stop_lon': float})
     df_trips = read_csv(dir_path / 'trips.txt')
     df_stop_times = read_csv(dir_path / 'stop_times.txt')
     df_routes = read_csv(dir_path / 'routes.txt')
@@ -80,12 +80,9 @@ def main():
     base_path = Path(__file__).resolve().parent
     dir_path = base_path / 'google_transit'
     dfs = read_data(dir_path)
-    df_stop_times = dfs[4]
     
-    print("Optimized Stop Times (Top 5):")
-    print(df_stop_times.head())
-    print("\nColumn Data Types:")
-    print(df_stop_times.dtypes)
+    for df in dfs:
+        print(df.head())
 
 if __name__ == "__main__":
     main()
